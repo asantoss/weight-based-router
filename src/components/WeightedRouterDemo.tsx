@@ -31,10 +31,12 @@ const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, 
 
 function SummaryCard({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-4">
-      <p className="text-xs text-slate-500">{label}</p>
-      <p className="mt-1 text-xl font-bold text-slate-900">{value}</p>
-    </div>
+    <Card className="py-4">
+      <CardContent>
+        <p className="text-xs text-slate-500">{label}</p>
+        <p className="mt-1 text-xl font-bold text-slate-900">{value}</p>
+      </CardContent>
+    </Card>
   );
 }
 
