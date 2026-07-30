@@ -39,7 +39,7 @@ export function AgentCard({
   return (
     <Card
       className={cn(
-        "relative gap-3 py-4 ring-1 transition-colors duration-300",
+        "relative gap-3 overflow-visible py-4 ring-1 transition-colors duration-300",
         isWinner ? "bg-indigo-50 ring-2 ring-indigo-400" : "ring-slate-200",
         !agent.online && "opacity-60"
       )}
