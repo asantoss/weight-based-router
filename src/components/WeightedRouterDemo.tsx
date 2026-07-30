@@ -7,6 +7,7 @@ import { AddAgentCard } from "./AddAgentCard";
 import { ControlPanel } from "./ControlPanel";
 import { AssignmentHistory } from "./AssignmentHistory";
 import { ExplanationPanel } from "./ExplanationPanel";
+import { Card, CardContent } from "@/components/ui/card";
 
 const AGENT_ID_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
