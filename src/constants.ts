@@ -1,8 +1,8 @@
 import type { Agent, AgentState } from "./types";
 
 export const INITIAL_AGENTS: Agent[] = [
-  { id: "A", name: "Agent A", weight: 4 },
-  { id: "B", name: "Agent B", weight: 3 },
+  { id: "A", name: "Agent A", weight: 3 },
+  { id: "B", name: "Agent B", weight: 1 },
 ];
 
 export function createInitialAgentState(): AgentState[] {
