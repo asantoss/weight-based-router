@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { AgentState, AssignmentResult } from "../types";
 import { AUTO_PLAY_INTERVAL_MS, createInitialAgentState } from "../constants";
 import { runWeightedRound } from "../scoring";
+import { loadSession, saveSession, clearSession } from "../storage";
 import { AgentCard } from "./AgentCard";
 import { AddAgentCard } from "./AddAgentCard";
 import { ControlPanel } from "./ControlPanel";
@@ -41,11 +42,17 @@ function SummaryCard({ label, value }: { label: string; value: string | number }
 }
 
 export function WeightedRouterDemo() {
-  const [agents, setAgents] = useState<AgentState[]>(createInitialAgentState);
-  const [displayAgents, setDisplayAgents] = useState<AgentState[]>(createInitialAgentState);
-  const [round, setRound] = useState(0);
-  const [history, setHistory] = useState<AssignmentResult[]>([]);
-  const [lastWinnerId, setLastWinnerId] = useState<string | null>(null);
+  const [agents, setAgents] = useState<AgentState[]>(
+    () => loadSession()?.agents ?? createInitialAgentState()
+  );
+  const [displayAgents, setDisplayAgents] = useState<AgentState[]>(
+    () => loadSession()?.agents ?? createInitialAgentState()
+  );
+  const [round, setRound] = useState(() => loadSession()?.round ?? 0);
+  const [history, setHistory] = useState<AssignmentResult[]>(() => loadSession()?.history ?? []);
+  const [lastWinnerId, setLastWinnerId] = useState<string | null>(
+    () => loadSession()?.lastWinnerId ?? null
+  );
   const [isAnimating, setIsAnimating] = useState(false);
   const [isAutoPlaying, setIsAutoPlaying] = useState(false);
   const [animationStage, setAnimationStage] = useState<AnimationStage>("idle");
@@ -62,6 +69,10 @@ export function WeightedRouterDemo() {
   useEffect(() => {
     roundRef.current = round;
   }, [round]);
+
+  useEffect(() => {
+    saveSession({ agents, round, history, lastWinnerId });
+  }, [agents, round, history, lastWinnerId]);
 
   const runSingleRoundAnimated = useCallback(async () => {
     if (isAnimatingRef.current) return;
@@ -168,6 +179,7 @@ export function WeightedRouterDemo() {
     setIsAnimating(false);
     setAnimationStage("idle");
     setPendingResult(null);
+    clearSession();
     const initial = createInitialAgentState();
     setAgents(initial);
     setDisplayAgents(initial);
